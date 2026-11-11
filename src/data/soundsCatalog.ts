@@ -1,0 +1,111 @@
+import { SoundTrack, SoundCategory } from '../types';
+
+export const SOUND_CATALOG: SoundTrack[] = [
+  // Real Piano Classics (Real acoustic instruments recorded live)
+  {
+    id: 'Gymnopedie No. 1',
+    name: 'Gymnopédie No. 1 • Erik Satie',
+    category: 'Real Piano',
+    description: 'Real acoustic grand piano. Unhurried, slow, gentle, and quiet. The world’s most peaceful contemplation classic.',
+    composer: 'Erik Satie',
+    icon: '🎹',
+    tag: 'Real Grand Piano',
+    badge: 'Most Peaceful',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg',
+  },
+  {
+    id: 'Clair de Lune',
+    name: 'Clair de Lune • Claude Debussy',
+    category: 'Real Piano',
+    description: 'Real acoustic grand piano recorded in natural acoustics. Poetic, gentle, and deeply relaxing for prayer.',
+    composer: 'Claude Debussy',
+    icon: '🌙',
+    tag: 'Acoustic Piano',
+    badge: 'Classic',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Clair_de_lune_%28Claude_Debussy%29_Suite_bergamasque.ogg',
+  },
+  {
+    id: 'Chopin Nocturne Op. 9 No. 2',
+    name: 'Nocturne in Eb Major • Chopin',
+    category: 'Real Piano',
+    description: 'Real acoustic piano. Tender, quiet melodies that soothe the heart and calm the restless mind.',
+    composer: 'Frédéric Chopin',
+    icon: '✨',
+    tag: 'Chopin Piano',
+    badge: 'Tender Prayer',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Chopin_Nocturne_Op_9_No_2.ogg',
+  },
+
+  // Quiet Contemplation
+  {
+    id: 'Moonlight Sonata',
+    name: 'Moonlight Sonata (Adagio) • Beethoven',
+    category: 'Quiet Contemplation',
+    description: 'Slow, hypnotic triplets played softly on real acoustic keyboard. Reverent, deep, and peaceful.',
+    composer: 'Ludwig van Beethoven',
+    icon: '🕯️',
+    tag: 'Adagio Piano',
+    badge: 'Quiet Stillness',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Beethoven_Moonlight_1st_movement.ogg',
+  },
+  {
+    id: 'Gnossienne No. 1',
+    name: 'Gnossienne No. 1 • Erik Satie',
+    category: 'Quiet Contemplation',
+    description: 'Still, contemplative, gentle acoustic piano chords designed for pure quietness before God.',
+    composer: 'Erik Satie',
+    icon: '🕊️',
+    tag: 'Stillness Keys',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Erik_Satie_-_Gnossienne_no_1.ogg',
+  },
+  {
+    id: 'Scriabin Lento Prelude',
+    name: 'Lento Prelude in Gb • Scriabin',
+    category: 'Quiet Contemplation',
+    description: 'Real acoustic piano performed softly by Axel Lange. Floating, unhurried, and peaceful.',
+    composer: 'Alexander Scriabin',
+    icon: '🌸',
+    tag: 'Lento Piano',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Skrjabin_Pr%C3%A9lude_Opus_11_Nr_13_Ges-Dur_Lento.ogg',
+  },
+
+  // Sanctuary Keys
+  {
+    id: 'Chopin Nocturne in C# Minor',
+    name: 'Nocturne in C# Minor • Chopin',
+    category: 'Sanctuary Keys',
+    description: 'Intimate acoustic piano solo recorded by Aaron Dunn. Deeply moving, soft, and spiritual.',
+    composer: 'Frédéric Chopin',
+    icon: '⛪',
+    tag: 'Intimate Piano',
+    badge: 'Sanctuary',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Chopin%2C_Nocturne_in_C-sharp_minor%2C_Op._Posth.ogg',
+  },
+  {
+    id: 'Schubert Andante',
+    name: 'Andante in F Major • Franz Schubert',
+    category: 'Sanctuary Keys',
+    description: 'Paul Pitman on acoustic grand piano. Warm, slow, prayerful keyboard movement with soft touch.',
+    composer: 'Franz Schubert',
+    icon: '🌿',
+    tag: 'Warm Piano',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Schubert%27s_Piano_Sonata_in_A_minor%2C_D.784_-_II._Andante_%28in_F_major%29_-_Paul_Pitman.ogg',
+  },
+  {
+    id: 'Chopin Nocturne Op. 37',
+    name: 'Nocturne in G Minor (Chorale) • Chopin',
+    category: 'Sanctuary Keys',
+    description: 'Reverent, hymn-like chorale played softly on acoustic piano for meditation.',
+    composer: 'Frédéric Chopin',
+    icon: '📖',
+    tag: 'Hymn Piano',
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Chopin-_Nocturne_op._37_no._1.ogg',
+  },
+];
+
+export const SOUND_CATEGORIES: SoundCategory[] = [
+  'Real Piano',
+  'Quiet Contemplation',
+  'Sanctuary Keys',
+  'Custom Uploads',
+];

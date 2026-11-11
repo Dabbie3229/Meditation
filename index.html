@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Meditate on the Word</title>
+    <meta name="description" content="Daily Christian scripture meditation, guided prayer reflections, ambient audio, streaks, and Biblical topics." />
+    <meta property="og:title" content="Meditate on the Word" />
+    <meta property="og:description" content="Daily Christian scripture meditation, guided prayer reflections, ambient audio, streaks, and Biblical topics." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Guard against browser extension injection collisions (e.g. wallet extensions colliding on window.ethereum)
+      (function() {
+        try {
+          var originalDefineProperty = Object.defineProperty;
+          Object.defineProperty = function(target, property, descriptor) {
+            if (target === window && property === 'ethereum') {
+              try {
+                return originalDefineProperty.call(this, target, property, Object.assign({}, descriptor, {
+                  configurable: true
+                }));
+              } catch (_) {
+                try {
+                  if (descriptor && 'value' in descriptor) {
+                    target.ethereum = descriptor.value;
+                  }
+                } catch (__) {}
+                return target;
+              }
+            }
+            return originalDefineProperty.call(this, target, property, descriptor);
+          };
+        } catch (_) {}
+
+        // Suppress unhandled errors dispatched by third-party browser extensions
+        window.addEventListener('error', function(e) {
+          if (
+            (e.filename && (e.filename.indexOf('chrome-extension://') !== -1 || e.filename.indexOf('moz-extension://') !== -1)) ||
+            (e.message && e.message.indexOf('ethereum') !== -1)
+          ) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          var reasonStr = (e.reason && (e.reason.stack || e.reason.message)) || '';
+          if (
+            reasonStr.indexOf('chrome-extension://') !== -1 ||
+            reasonStr.indexOf('moz-extension://') !== -1 ||
+            reasonStr.indexOf('ethereum') !== -1
+          ) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+      })();
+    </script>
+  </head>
+  <body class="bg-emerald-50/40 text-slate-900 antialiased selection:bg-emerald-200 selection:text-emerald-950">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
