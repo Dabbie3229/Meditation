@@ -2,6 +2,8 @@ import React from 'react';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { PreferencesScreen } from './screens/PreferencesScreen';
 import { HomeScreen } from './screens/HomeScreen';
+import { BibleScreen } from './screens/BibleScreen';
+import { CompanionScreen } from './screens/CompanionScreen';
 import { PlayerScreen } from './screens/PlayerScreen';
 import { SessionCompleteScreen } from './screens/SessionCompleteScreen';
 import { ExploreScreen } from './screens/ExploreScreen';
@@ -28,11 +30,13 @@ export const ShowcaseGrid: React.FC<ShowcaseGridProps> = ({
     { id: 'welcome', title: '1. Welcome & Onboarding', subtitle: 'Sunrise cross, daily scripture hook' },
     { id: 'preferences', title: '2. Set Your Preferences', subtitle: 'Reminder time, music style, initial focus' },
     { id: 'home', title: '3. Good Evening Home', subtitle: 'Today’s verse card, duration & moods' },
-    { id: 'player', title: '4. Audio Meditation Player', subtitle: 'Active audio player & reflection prompt' },
-    { id: 'completed', title: '5. Session Complete', subtitle: 'Celebration, journaling & voice notes' },
-    { id: 'explore', title: '6. Explore Topics', subtitle: '8 biblical categories & scriptures' },
-    { id: 'progress', title: '7. Your Progress', subtitle: '12-day streak & weekly verses chart' },
-    { id: 'settings', title: '8. User Settings', subtitle: 'Profile, preferences & dark mode toggle' },
+    { id: 'bible', title: '4. Full Holy Bible', subtitle: 'Genesis to Revelation • All 66 Books' },
+    { id: 'chat', title: '5. Sanctuary AI Chat', subtitle: 'Natural streaming chat & voice companion' },
+    { id: 'player', title: '6. Audio Meditation Player', subtitle: 'Active audio player & reflection prompt' },
+    { id: 'completed', title: '7. Session Complete', subtitle: 'Celebration, journaling & voice notes' },
+    { id: 'explore', title: '8. Explore Topics', subtitle: 'Search Bible & 8 biblical categories' },
+    { id: 'progress', title: '9. Your Progress', subtitle: '12-day streak & weekly verses chart' },
+    { id: 'settings', title: '10. User Settings', subtitle: 'Profile, preferences & dark mode toggle' },
   ];
 
   const renderScreen = (id: ScreenId) => {
@@ -66,6 +70,24 @@ export const ShowcaseGrid: React.FC<ShowcaseGridProps> = ({
             currentTab="home"
             onTabChange={(t) => onSelectScreenToInteract(t as ScreenId)}
             streakDays={streakDays}
+          />
+        );
+      case 'bible':
+        return (
+          <BibleScreen
+            currentTab="bible"
+            onTabChange={(t) => onSelectScreenToInteract(t as ScreenId)}
+            onSelectVerse={() => onSelectScreenToInteract('player')}
+          />
+        );
+      case 'chat':
+        return (
+          <CompanionScreen
+            currentTab="chat"
+            onTabChange={(t) => onSelectScreenToInteract(t as ScreenId)}
+            verse={TODAY_VERSE}
+            mood="Peace"
+            userName={preferences.userName}
           />
         );
       case 'player':
@@ -133,7 +155,7 @@ export const ShowcaseGrid: React.FC<ShowcaseGridProps> = ({
       <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-3">
           <Smartphone className="w-3.5 h-3.5" />
-          <span>Complete Showcase Gallery (All 8 Screens)</span>
+          <span>Complete Showcase Gallery (All 10 Screens)</span>
         </div>
         <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
           Meditate on the Word App Experience

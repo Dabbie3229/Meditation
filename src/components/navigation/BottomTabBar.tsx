@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Search, BarChart2, Settings } from 'lucide-react';
+import { Home, BookOpen, MessageCircle, Search, BarChart2, Settings } from 'lucide-react';
 import { MainTab } from '../../types';
 
 interface BottomTabBarProps {
@@ -10,14 +10,16 @@ interface BottomTabBarProps {
 export const BottomTabBar: React.FC<BottomTabBarProps> = ({ currentTab, onTabChange }) => {
   const tabs: { id: MainTab; label: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'home', label: 'Home', icon: Home },
+    { id: 'bible', label: 'Bible', icon: BookOpen },
+    { id: 'chat', label: 'AI Chat', icon: MessageCircle },
     { id: 'explore', label: 'Explore', icon: Search },
     { id: 'progress', label: 'Progress', icon: BarChart2 },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
-    <div className="w-full bg-white/95 dark:bg-[#062016]/95 backdrop-blur-md border-t border-emerald-100/80 dark:border-emerald-900/60 px-4 pt-2 pb-5 z-40 transition-colors">
-      <div className="grid grid-cols-4 max-w-md mx-auto">
+    <div className="w-full bg-white/95 dark:bg-[#062016]/95 backdrop-blur-md border-t border-emerald-100/80 dark:border-emerald-900/60 px-2 pt-2 pb-5 z-40 transition-colors">
+      <div className="grid grid-cols-6 max-w-md mx-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = currentTab === tab.id;
@@ -38,7 +40,7 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ currentTab, onTabCha
                   }`}
                 />
               </div>
-              <span className="text-[11px] mt-1 tracking-tight font-medium">
+              <span className="text-[10px] mt-1 tracking-tight font-medium">
                 {tab.label}
               </span>
             </button>

@@ -1,7 +1,9 @@
 {
   "name": "Meditate on the Word",
   "description": "Daily Christian scripture meditation, guided prayer reflections, ambient audio, streaks, and Biblical topics.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": [
+    "microphone"
+  ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]

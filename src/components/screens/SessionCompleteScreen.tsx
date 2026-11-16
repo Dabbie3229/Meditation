@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Home, Check, Sparkles, PenLine, Mic, MicOff, Heart, Share2, BarChart2, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Home, Check, Sparkles, PenLine, Mic, Square, Heart, Share2, BarChart2, ChevronRight, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { TopStatusBar } from '../navigation/TopStatusBar';
 import { Verse } from '../../types';
+import { useAudioTranscriber } from '../../hooks/useAudioTranscriber';
 
 interface SessionCompleteScreenProps {
   verse: Verse;
@@ -23,25 +24,22 @@ export const SessionCompleteScreen: React.FC<SessionCompleteScreenProps> = ({
   onShare,
 }) => {
   const [noteText, setNoteText] = useState('');
-  const [isRecording, setIsRecording] = useState(false);
   const [hasVoiceNote, setHasVoiceNote] = useState(false);
   const [noteSaved, setNoteSaved] = useState(false);
 
-  const handleVoiceToggle = () => {
-    if (!isRecording) {
-      setIsRecording(true);
-      // Simulate quick voice recording
-      setTimeout(() => {
-        setIsRecording(false);
-        setHasVoiceNote(true);
-        if (!noteText) {
-          setNoteText('Recorded: "I felt a deep sense of peace knowing that God is in complete control."');
-        }
-      }, 2500);
-    } else {
-      setIsRecording(false);
-    }
-  };
+  const {
+    isRecording,
+    isTranscribing,
+    recordingSeconds,
+    error: transcribeError,
+    toggleRecording,
+  } = useAudioTranscriber({
+    contextHint: `Meditation reflection on ${verse.reference}`,
+    onTranscript: (transcript) => {
+      setHasVoiceNote(true);
+      setNoteText((prev) => (prev.trim() ? `${prev.trim()}\n${transcript}` : transcript));
+    },
+  });
 
   const handleSave = () => {
     if (noteText.trim() || hasVoiceNote) {
@@ -112,34 +110,49 @@ export const SessionCompleteScreen: React.FC<SessionCompleteScreenProps> = ({
             className="w-full text-xs p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 resize-none transition-all"
           />
 
+          {transcribeError && (
+            <div className="mt-2 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center gap-2 text-[11px] text-emerald-900 dark:text-emerald-100">
+              <AlertCircle className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400 shrink-0" />
+              <span>{transcribeError}</span>
+            </div>
+          )}
+
           {/* Action Row */}
           <div className="flex items-center gap-2 mt-3">
-            {/* Voice Note Button */}
+            {/* Voice Note Transcription Button */}
             <button
               type="button"
-              onClick={handleVoiceToggle}
-              className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              onClick={toggleRecording}
+              disabled={isTranscribing}
+              className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-60 ${
                 isRecording
-                  ? 'bg-rose-100 text-rose-700 border border-rose-300 animate-pulse'
+                  ? 'bg-emerald-700 text-white border border-emerald-600 animate-pulse'
+                  : isTranscribing
+                  ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 border border-emerald-300'
                   : hasVoiceNote
-                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200/70'
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
               }`}
             >
-              {isRecording ? (
+              {isTranscribing ? (
                 <>
-                  <MicOff className="w-3.5 h-3.5" />
-                  <span>Recording...</span>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Transcribing...</span>
+                </>
+              ) : isRecording ? (
+                <>
+                  <Square className="w-3 h-3 fill-white" />
+                  <span>Stop ({recordingSeconds}s)</span>
                 </>
               ) : hasVoiceNote ? (
                 <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Voice Note Saved</span>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Transcribed! Add More</span>
                 </>
               ) : (
                 <>
                   <Mic className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
-                  <span>Voice Note</span>
+                  <span>Speak &amp; Transcribe</span>
                 </>
               )}
             </button>

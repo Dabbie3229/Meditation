@@ -2,13 +2,15 @@ export type ScreenId =
   | 'welcome' 
   | 'preferences' 
   | 'home' 
+  | 'bible'
+  | 'chat'
   | 'player' 
   | 'completed' 
   | 'explore' 
   | 'progress' 
   | 'settings';
 
-export type MainTab = 'home' | 'explore' | 'progress' | 'settings';
+export type MainTab = 'home' | 'bible' | 'chat' | 'explore' | 'progress' | 'settings';
 
 export type DurationOption = {
   id: string;

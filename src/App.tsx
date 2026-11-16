@@ -9,6 +9,8 @@ import { TODAY_VERSE } from './data/scriptures';
 import { WelcomeScreen } from './components/screens/WelcomeScreen';
 import { PreferencesScreen } from './components/screens/PreferencesScreen';
 import { HomeScreen } from './components/screens/HomeScreen';
+import { BibleScreen } from './components/screens/BibleScreen';
+import { CompanionScreen } from './components/screens/CompanionScreen';
 import { PlayerScreen } from './components/screens/PlayerScreen';
 import { SessionCompleteScreen } from './components/screens/SessionCompleteScreen';
 import { ExploreScreen } from './components/screens/ExploreScreen';
@@ -176,6 +178,29 @@ export default function App() {
             onUpdateFeaturedVerse={setActiveVerse}
           />
         );
+      case 'bible':
+        return (
+          <BibleScreen
+            currentTab="bible"
+            onTabChange={navigateTab}
+            activeVerseId={activeVerse.id}
+            onSelectVerse={(v) => {
+              setActiveVerse(v);
+              setCurrentScreen('player');
+            }}
+            onUpdateFeaturedVerse={setActiveVerse}
+          />
+        );
+      case 'chat':
+        return (
+          <CompanionScreen
+            currentTab="chat"
+            onTabChange={navigateTab}
+            verse={activeVerse}
+            mood={selectedMood}
+            userName={preferences.userName}
+          />
+        );
       case 'player':
         return (
           <PlayerScreen
@@ -212,6 +237,7 @@ export default function App() {
               setActiveVerse(v);
               setCurrentScreen('player');
             }}
+            onUpdateFeaturedVerse={setActiveVerse}
           />
         );
       case 'progress':
@@ -244,11 +270,13 @@ export default function App() {
     { id: 'welcome', label: '1. Welcome' },
     { id: 'preferences', label: '2. Preferences' },
     { id: 'home', label: '3. Home' },
-    { id: 'player', label: '4. Player' },
-    { id: 'completed', label: '5. Complete' },
-    { id: 'explore', label: '6. Explore' },
-    { id: 'progress', label: '7. Progress' },
-    { id: 'settings', label: '8. Settings' },
+    { id: 'bible', label: '4. Bible' },
+    { id: 'chat', label: '5. AI Chat' },
+    { id: 'player', label: '6. Player' },
+    { id: 'completed', label: '7. Complete' },
+    { id: 'explore', label: '8. Explore' },
+    { id: 'progress', label: '9. Progress' },
+    { id: 'settings', label: '10. Settings' },
   ];
 
   return (

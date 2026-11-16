@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { User, Crown, BookOpen, Zap, Clock, Sparkles, Feather, Smile, Shield, Heart, ChevronDown, Play, X, Check, Flame } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Crown, BookOpen, Zap, Clock, Sparkles, Feather, Smile, Shield, Heart, ChevronDown, Play, X, Check, Search, MessageCircle, Mic } from 'lucide-react';
 import { TopStatusBar } from '../navigation/TopStatusBar';
 import { BottomTabBar } from '../navigation/BottomTabBar';
 import { MainTab, MoodType, Verse } from '../../types';
 import { MOODS, TODAY_VERSE, MOOD_SCRIPTURES } from '../../data/scriptures';
+import { ScriptureSearchModal } from '../modals/ScriptureSearchModal';
+import { DailyPrayerReflection } from '../DailyPrayerReflection';
 
 interface HomeScreenProps {
   userName: string;
@@ -32,10 +34,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   featuredVerse = TODAY_VERSE,
   onUpdateFeaturedVerse,
 }) => {
-  // State for the fly-down scripture list
+  // State for the fly-down scripture list & search modal
   const [expandedMood, setExpandedMood] = useState<MoodType | null>(selectedMood);
   const [activeVerse, setActiveVerse] = useState<Verse>(featuredVerse);
   const [justSetVerseId, setJustSetVerseId] = useState<string | null>(null);
+  const [showScriptureSearch, setShowScriptureSearch] = useState(false);
+
+  useEffect(() => {
+    setActiveVerse(featuredVerse);
+  }, [featuredVerse]);
 
   const durationOptions = [
     { label: 'Quick', duration: 3, timeLabel: '3 min', icon: Zap },
@@ -158,7 +165,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         </div>
 
         {/* Greeting */}
-        <div className="mb-5">
+        <div className="mb-3.5">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
             <span>Good evening, {userName}</span>
             <span className="text-emerald-600 dark:text-emerald-400 text-xl">🌿</span>
@@ -166,6 +173,30 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <p className="text-xs font-medium text-emerald-800/80 dark:text-emerald-300/80 mt-0.5">
             Pause. Meditate. Connect.
           </p>
+        </div>
+
+        {/* Scripture Search Trigger Bar + Full Bible Shortcut */}
+        <div className="flex items-center gap-2 mb-4">
+          <button
+            type="button"
+            onClick={() => setShowScriptureSearch(true)}
+            className="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-emerald-50/70 dark:bg-[#062016] border border-emerald-200/80 dark:border-emerald-800/80 hover:border-emerald-400 flex items-center gap-2 text-left transition-colors cursor-pointer group"
+          >
+            <Search className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="text-xs text-slate-500 dark:text-emerald-200/80 truncate group-hover:text-emerald-900 dark:group-hover:text-white transition-colors">
+              Search Isaiah 26:1, John 3:16...
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onTabChange('bible')}
+            title="Browse Genesis to Revelation"
+            className="px-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer shrink-0"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Full Bible</span>
+          </button>
         </div>
 
         {/* Today's Verse Featured Card */}
@@ -236,6 +267,40 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             );
           })}
         </div>
+
+        {/* Daily Prayer Reflection (Gemini AI Morning & Evening Devotional) */}
+        <div className="mt-5">
+          <DailyPrayerReflection
+            verse={activeVerse}
+            mood={selectedMood}
+            userName={userName}
+          />
+        </div>
+
+        {/* Natural AI Companion Chat Launcher */}
+        <button
+          type="button"
+          onClick={() => onTabChange('chat')}
+          className="mt-3 w-full px-4 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-between gap-3 shadow-sm transition-colors cursor-pointer group"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <MessageCircle className="w-4.5 h-4.5 text-white" />
+            </div>
+            <div className="text-left min-w-0">
+              <div className="text-xs font-bold leading-tight">
+                Talk with Sanctuary Companion
+              </div>
+              <div className="text-[11px] text-emerald-100 truncate">
+                Chat or speak naturally about life, faith, or prayer
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/15 text-[11px] font-semibold shrink-0">
+            <Mic className="w-3.5 h-3.5" />
+            <span>Chat</span>
+          </div>
+        </button>
 
         {/* Choose Mood Section with Interactive Fly-Down Effect */}
         <div className="mt-6">
@@ -407,6 +472,20 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* Fixed Bottom Tab Bar */}
       <BottomTabBar currentTab={currentTab} onTabChange={onTabChange} />
+
+      {/* Scripture Search Modal */}
+      {showScriptureSearch && (
+        <ScriptureSearchModal
+          activeVerseId={activeVerse.id}
+          onClose={() => setShowScriptureSearch(false)}
+          onSelectVerse={(v) => {
+            handleSetVerseAsFeatured(v);
+            onStartMeditation(v);
+          }}
+          onSetFeaturedVerse={handleSetVerseAsFeatured}
+          onOpenFullBible={() => onTabChange('bible')}
+        />
+      )}
     </div>
   );
 };

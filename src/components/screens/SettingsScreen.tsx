@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon, Music, Bell, Sun, Moon, Info, Share2, Star, HelpCircle, ChevronRight, X, Heart, Mic, Sparkles, Volume2 } from 'lucide-react';
+import { Settings as SettingsIcon, Music, Bell, Sun, Moon, Info, Share2, Star, HelpCircle, ChevronRight, X, Heart, Mic, Sparkles, Volume2, BookOpen } from 'lucide-react';
 import { TopStatusBar } from '../navigation/TopStatusBar';
 import { BottomTabBar } from '../navigation/BottomTabBar';
 import { MainTab, MusicStyle, UserPreferences, VoiceGender } from '../../types';
 import { SoundCatalogModal } from '../modals/SoundCatalogModal';
 import { VoiceStudioModal } from '../modals/VoiceStudioModal';
+import { BibleTranslationPickerModal } from '../modals/BibleTranslationPickerModal';
+import { getSavedBibleTranslation, getTranslationDisplayLabel, saveBibleTranslation } from '../../services/scriptureSearch';
 import { narrationEngine, VOICE_PERSONAS } from '../../services/narrationEngine';
 import { TODAY_VERSE } from '../../data/scriptures';
 
@@ -24,6 +26,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   onOpenPreferences,
 }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [bibleTranslation, setBibleTranslation] = useState<string>(() =>
+    getSavedBibleTranslation()
+  );
 
   const toggleDarkMode = () => {
     onUpdatePreferences({ isDarkMode: !preferences.isDarkMode });
@@ -72,6 +77,22 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
         {/* Menu Section */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs divide-y divide-slate-100 dark:divide-slate-800/80 overflow-hidden mb-5">
+          {/* Bible Translation */}
+          <button
+            type="button"
+            onClick={() => setActiveModal('translation')}
+            className="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left cursor-pointer"
+          >
+            <div className="flex items-center gap-3 text-xs font-semibold text-slate-800 dark:text-slate-200">
+              <BookOpen className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+              <span>Bible Translation</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+              <span>{getTranslationDisplayLabel(bibleTranslation)}</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            </div>
+          </button>
+
           {/* Music Style */}
           <button
             type="button"
@@ -205,6 +226,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Bible Translation Picker Modal */}
+      {activeModal === 'translation' && (
+        <BibleTranslationPickerModal
+          currentTranslation={bibleTranslation}
+          onSelect={(id) => {
+            setBibleTranslation(id);
+            saveBibleTranslation(id);
+          }}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
 
       {/* Sound Catalog Modal */}
       {activeModal === 'music' && (
